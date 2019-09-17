@@ -9,7 +9,7 @@ function Slider(props) {
     const { bannerList } = props;
 
     useEffect(() => {
-        if(bannerList.lenght && !sliderSwiper) {
+        if(bannerList.length && !sliderSwiper) {
             let sliderSwiper = new Swiper(".slider-container", {
                 loop: true,
                 autoplay: true,
@@ -18,10 +18,11 @@ function Slider(props) {
             });
             setSliderSwiper(sliderSwiper);
         }
-    }, [bannerList.lenght, sliderSwiper]);
+    }, [bannerList.length, sliderSwiper]);
 
     return(
         <SliderContainer>
+            <div className="before"></div>
             <div className="slider-container">
                 <div className="swiper-wrapper">
                     {
