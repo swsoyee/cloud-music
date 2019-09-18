@@ -7,6 +7,8 @@ import Scroll from '../../baseUI/scroll.js';
 import {Content} from './style';
 import {connect} from 'react-redux';
 import * as actionTypes from './store/actionCreators';
+import {forceCheck} from 'react-lazyload';
+import Loading from '../../baseUI/loading';
 
 function Recommend (props) {
   // mock data
@@ -23,13 +25,19 @@ function Recommend (props) {
   //     }
   // })
 
-  const {bannerList, recommendList} = props;
+  const {bannerList, recommendList, enterLoading} = props;
 
   const {getBannerDataDispatch, getRecommendListDataDispatch} = props;
 
   useEffect (() => {
-    getBannerDataDispatch ();
-    getRecommendListDataDispatch ();
+    // 如果页面有数据，则不发请求
+    // immutable数据结构中长度属性size
+    if (!bannerList.size) {
+      getBannerDataDispatch ();
+    }
+    if (!recommendList.size) {
+      getRecommendListDataDispatch ();
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -38,12 +46,13 @@ function Recommend (props) {
 
   return (
     <Content>
-      <Scroll className="list">
+      <Scroll className="list" onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS} />
           <RecommendList recommendList={recommendListJS} />
         </div>
       </Scroll>
+      {enterLoading ? <Loading /> : null}
     </Content>
   );
 }
@@ -52,6 +61,7 @@ function Recommend (props) {
 const mapStateToProps = state => ({
   bannerList: state.getIn (['recommend', 'bannerList']),
   recommendList: state.getIn (['recommend', 'recommendList']),
+  enterLoading: state.getIn (['recommend', 'enterLoading']),
 });
 // 映射dispatch到props上
 const mapDispatchToProps = dispatch => {
