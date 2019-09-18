@@ -3,7 +3,7 @@
 import React, {useEffect} from 'react';
 import Slider from '../../components/slider';
 import RecommendList from '../../components/list/list';
-import Scroll from '../../baseUI/scroll.js';
+import Scroll from '../../baseUI/scroll';
 import {Content} from './style';
 import {connect} from 'react-redux';
 import * as actionTypes from './store/actionCreators';
